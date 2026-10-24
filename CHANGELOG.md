@@ -1,3 +1,10 @@
+## 0.1.1
+
+* Example app: a **Code** button on every component page with copy-paste
+  ready Dart code (also in `example/lib/snippets.dart`). Every snippet is
+  compiled and built by `example/test/snippets_test.dart`.
+* Example app is Swift Package Manager only (removed leftover CocoaPods files).
+
 ## 0.1.0
 
 * Initial release.
@@ -9,4 +16,3 @@
 * `NativeComponentController` with `trigger`, `reset`, `send` and an event stream.
 * Custom Swift components via `NativeComponentRegistry`.
 * Swift Package Manager integration and privacy manifest.
-* Example app with copy-paste ready code for every component.

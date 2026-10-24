@@ -37,7 +37,7 @@ Everything is configurable from Dart, with no Cupertino widgets involved.
 
 ```yaml
 dependencies:
-  glassy_ui_ios: ^0.1.0
+  glassy_ui_ios: ^0.1.1
 ```
 
 This plugin is distributed with **Swift Package Manager**, so turn it on for your app in `pubspec.yaml`:
