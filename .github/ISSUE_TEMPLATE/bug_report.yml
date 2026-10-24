@@ -1,0 +1,37 @@
+name: Bug report
+description: Something doesn't look or behave like it should.
+labels: [bug]
+body:
+  - type: input
+    id: component
+    attributes:
+      label: Component
+      description: The `NativeComponentType` (or custom component id) affected.
+      placeholder: glassMorphing
+    validations:
+      required: true
+  - type: textarea
+    id: what-happened
+    attributes:
+      label: What happened?
+      description: What you expected, what happened instead, and screenshots if possible.
+    validations:
+      required: true
+  - type: textarea
+    id: code
+    attributes:
+      label: Minimal code
+      description: The `NativeComponent(...)` you use, including its config.
+      render: dart
+  - type: input
+    id: ios
+    attributes:
+      label: iOS version and device
+      placeholder: iOS 26.1, iPhone 16 Pro (simulator)
+    validations:
+      required: true
+  - type: textarea
+    id: doctor
+    attributes:
+      label: flutter doctor -v
+      render: text

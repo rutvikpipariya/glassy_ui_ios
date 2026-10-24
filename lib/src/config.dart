@@ -14,29 +14,88 @@ enum NativeGlass {
 }
 
 /// Forces the native light or dark appearance.
-enum NativeColorScheme { light, dark }
+enum NativeColorScheme {
+  /// Light appearance.
+  light,
+
+  /// Dark appearance.
+  dark,
+}
 
 /// SwiftUI `ControlSize`.
-enum NativeControlSize { mini, small, regular, large, extraLarge }
+enum NativeControlSize {
+  /// `ControlSize.mini`.
+  mini,
+
+  /// `ControlSize.small`.
+  small,
+
+  /// `ControlSize.regular`, the system default.
+  regular,
+
+  /// `ControlSize.large`.
+  large,
+
+  /// `ControlSize.extraLarge`.
+  extraLarge,
+}
 
 /// SwiftUI `Font.Weight`.
 enum NativeFontWeight {
+  /// `Font.Weight.ultraLight`.
   ultraLight,
+
+  /// `Font.Weight.thin`.
   thin,
+
+  /// `Font.Weight.light`.
   light,
+
+  /// `Font.Weight.regular`.
   regular,
+
+  /// `Font.Weight.medium`.
   medium,
+
+  /// `Font.Weight.semibold`.
   semibold,
+
+  /// `Font.Weight.bold`.
   bold,
+
+  /// `Font.Weight.heavy`.
   heavy,
-  black
+
+  /// `Font.Weight.black`.
+  black,
 }
 
 /// SwiftUI `Font.Design`.
-enum NativeFontDesign { standard, rounded, serif, monospaced }
+enum NativeFontDesign {
+  /// The default system font (San Francisco).
+  standard,
+
+  /// SF Pro Rounded.
+  rounded,
+
+  /// New York.
+  serif,
+
+  /// SF Mono.
+  monospaced,
+}
 
 /// Role of a [NativeItem] in menus, alerts and dialogs.
-enum NativeItemRole { normal, destructive, cancel }
+enum NativeItemRole {
+  /// A regular action.
+  normal,
+
+  /// A destructive action, shown in red.
+  destructive,
+
+  /// The cancel action of an alert, dialog or action sheet.
+  cancel,
+}
 
 /// An image shown natively: an SF Symbol, a Flutter asset or raw bytes.
 @immutable
@@ -55,6 +114,7 @@ class NativeImage {
   final String _type;
   final Object _value;
 
+  /// Encodes the image for the platform channel.
   Map<String, Object?> toMap() => {'type': _type, 'value': _value};
 }
 
@@ -63,6 +123,7 @@ class NativeImage {
 /// Every field is optional; `null` keeps the component's native default.
 @immutable
 class NativeStyle {
+  /// Creates a style. Every argument is optional.
   const NativeStyle({
     this.tintColor,
     this.foregroundColor,
@@ -105,6 +166,7 @@ class NativeStyle {
   /// Corner radius of cards, sheets and rounded glass shapes.
   final double? cornerRadius;
 
+  /// Glass variant used for glass surfaces.
   final NativeGlass glass;
 
   /// Tint mixed into glass surfaces.
@@ -113,18 +175,28 @@ class NativeStyle {
   /// Whether glass reacts to touches (`Glass.interactive()`).
   final bool interactive;
 
+  /// Content padding in points.
   final double? padding;
+
+  /// Spacing between elements in points.
   final double? spacing;
 
   /// Title font size; `null` keeps Dynamic Type text styles.
   final double? fontSize;
+
+  /// Title font weight.
   final NativeFontWeight? fontWeight;
+
+  /// Title font design.
   final NativeFontDesign? fontDesign;
 
   /// Forces light or dark; `null` follows the system.
   final NativeColorScheme? colorScheme;
+
+  /// Size of buttons and other controls.
   final NativeControlSize? controlSize;
 
+  /// Returns a copy with the given fields replaced.
   NativeStyle copyWith({
     Color? tintColor,
     Color? foregroundColor,
@@ -165,6 +237,7 @@ class NativeStyle {
     );
   }
 
+  /// Encodes this object for the platform channel.
   Map<String, Object?> toMap() => _compact({
         'tintColor': tintColor?.toARGB32(),
         'foregroundColor': foregroundColor?.toARGB32(),
@@ -195,6 +268,7 @@ class NativeStyle {
 /// Nest [children] for submenus, split-view items and wheel picker columns.
 @immutable
 class NativeItem {
+  /// Creates an item. Only [title] is required.
   const NativeItem({
     this.id,
     required this.title,
@@ -223,7 +297,11 @@ class NativeItem {
 
   /// Identifier sent back in events. Defaults to [title].
   final String? id;
+
+  /// Visible title.
   final String title;
+
+  /// Secondary text, shown under the title where supported.
   final String? subtitle;
 
   /// Icon or artwork. Takes precedence over [symbol].
@@ -231,6 +309,8 @@ class NativeItem {
 
   /// SF Symbol name, a shorthand for `image: NativeImage.symbol(…)`.
   final String? symbol;
+
+  /// Role in menus, alerts and dialogs.
   final NativeItemRole role;
 
   /// Badge text (tab badges, list accessories).
@@ -238,9 +318,14 @@ class NativeItem {
 
   /// Initial selected / checked / on state.
   final bool selected;
+
+  /// Whether the item can be interacted with.
   final bool enabled;
+
+  /// Nested items: submenus, split-view rows or wheel picker rows.
   final List<NativeItem> children;
 
+  /// Encodes this object for the platform channel.
   Map<String, Object?> toMap() => _compact({
         'id': id,
         'title': title,
@@ -263,6 +348,8 @@ class NativeItem {
 /// which fields it reads (see `NativeComponentType`). Unknown fields are ignored.
 @immutable
 class NativeComponentConfig {
+  /// Creates a configuration. Every argument is optional; components fall
+  /// back to their own native defaults.
   const NativeComponentConfig({
     this.title,
     this.subtitle,
@@ -279,9 +366,16 @@ class NativeComponentConfig {
     this.style = const NativeStyle(),
   });
 
+  /// Main text: navigation title, button label, alert title…
   final String? title;
+
+  /// Secondary text.
   final String? subtitle;
+
+  /// Body text of alerts, sheets and cards.
   final String? message;
+
+  /// Placeholder of text and search fields.
   final String? placeholder;
 
   /// Main icon or artwork.
@@ -293,15 +387,26 @@ class NativeComponentConfig {
   /// Initial value: `bool`, `num`, `String`, `List`, or a `DateTime`
   /// (sent as ISO-8601). Colors may be passed as `Color`.
   final Object? value;
+
+  /// Lower bound of sliders, steppers and progress.
   final double? min;
+
+  /// Upper bound of sliders, steppers and progress.
   final double? max;
+
+  /// Step of sliders and steppers.
   final double? step;
+
+  /// Whether the whole component accepts interaction.
   final bool enabled;
 
   /// Component-specific options (codec-compatible values).
   final Map<String, Object?> extra;
+
+  /// Visual customization.
   final NativeStyle style;
 
+  /// Returns a copy with the given fields replaced.
   NativeComponentConfig copyWith({
     String? title,
     String? subtitle,
@@ -334,6 +439,7 @@ class NativeComponentConfig {
     );
   }
 
+  /// Encodes this object for the platform channel.
   Map<String, Object?> toMap() => _compact({
         'title': title,
         'subtitle': subtitle,

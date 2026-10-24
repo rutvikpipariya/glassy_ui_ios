@@ -4,6 +4,9 @@
   ready Dart code (also in `example/lib/snippets.dart`). Every snippet is
   compiled and built by `example/test/snippets_test.dart`.
 * Example app is Swift Package Manager only (removed leftover CocoaPods files).
+* Every public API is documented. Each `NativeComponentType` value lists the
+  config fields, commands and events of its component.
+* README redesign: banner, animated demos, comparison table and FAQ.
 
 ## 0.1.0
 

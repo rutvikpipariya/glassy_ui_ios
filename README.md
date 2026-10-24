@@ -1,18 +1,57 @@
-# glassy_ui_ios
-
-[![pub package](https://img.shields.io/pub/v/glassy_ui_ios.svg)](https://pub.dev/packages/glassy_ui_ios)
-[![platform](https://img.shields.io/badge/platform-iOS%2017%2B-blue.svg)](https://pub.dev/packages/glassy_ui_ios)
-[![license: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
-
-**90 real native iOS components for Flutter**, written in SwiftUI and UIKit and embedded as platform views.
-On **iOS 26+** they use Apple's **Liquid Glass**. On **iOS 17–18** they fall back to classic materials automatically.
-Everything is configurable from Dart, with no Cupertino widgets involved.
+<p align="center">
+  <img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/banner.png" alt="glassy_ui_ios: 90 native iOS components for Flutter" width="100%">
+</p>
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/catalog.png" width="230" alt="Catalog">
-  <img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/glass_container.png" width="230" alt="Glass effect container">
-  <img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/media_controls.png" width="230" alt="Media controls">
+  <a href="https://pub.dev/packages/glassy_ui_ios"><img src="https://img.shields.io/pub/v/glassy_ui_ios.svg?label=pub.dev&color=0175C2" alt="pub version"></a>
+  <a href="https://pub.dev/packages/glassy_ui_ios/score"><img src="https://img.shields.io/pub/likes/glassy_ui_ios?color=ff4f8b" alt="pub likes"></a>
+  <a href="https://pub.dev/packages/glassy_ui_ios/score"><img src="https://img.shields.io/pub/points/glassy_ui_ios?color=2ea44f" alt="pub points"></a>
+  <a href="https://pub.dev/packages/glassy_ui_ios"><img src="https://img.shields.io/pub/dm/glassy_ui_ios?color=8a2be2" alt="downloads"></a>
+  <a href="https://github.com/rutvikpipariya/glassy_ui_ios/actions/workflows/ci.yml"><img src="https://github.com/rutvikpipariya/glassy_ui_ios/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
+  <img src="https://img.shields.io/badge/platform-iOS%2017%2B-black?logo=apple" alt="iOS 17+">
+  <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
 </p>
+
+<h3 align="center">Real SwiftUI &amp; UIKit components in your Flutter app.<br>Apple's Liquid Glass on iOS 26, automatic fallbacks on iOS 17–18.</h3>
+
+<p align="center">
+  <a href="#installation">Installation</a> ·
+  <a href="#quick-start">Quick start</a> ·
+  <a href="#component-gallery">All 90 components</a> ·
+  <a href="#faq">FAQ</a>
+</p>
+
+## See it in action
+
+<table>
+  <tr>
+    <td align="center"><img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/demo/glass-morphing.gif" width="190" alt="Glass morphing"><br><sub><b>Glass morphing</b><br><code>glassMorphing</code></sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/demo/floating-action-button.gif" width="190" alt="Floating action button"><br><sub><b>Floating action button</b><br><code>floatingActionButton</code></sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/demo/glass-transition.gif" width="190" alt="Glass transition"><br><sub><b>Glass transition</b><br><code>glassTransition</code></sub></td>
+    <td align="center"><img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/demo/download-progress.gif" width="190" alt="Download progress"><br><sub><b>App Store download</b><br><code>downloadProgress</code></sub></td>
+  </tr>
+</table>
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/catalog.png" width="200" alt="Catalog">
+  <img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/glass_container.png" width="200" alt="Glass effect container">
+  <img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/media_controls.png" width="200" alt="Media controls">
+  <img src="https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main/screenshots/toolbar.png" width="200" alt="Toolbar">
+</p>
+
+## Why glassy_ui_ios?
+
+Flutter draws every pixel itself, so Cupertino-style widgets can only *imitate* iOS. Liquid Glass is rendered by the system, with real-time refraction and morphing, and can't be faithfully recreated in Flutter. **glassy_ui_ios embeds Apple's own components instead.**
+
+| | **glassy_ui_ios** | Flutter look-alike widgets |
+| --- | :---: | :---: |
+| Rendering | ✅ Real SwiftUI / UIKit | Recreated in Flutter |
+| Liquid Glass (refraction, morphing) | ✅ Native `glassEffect` | ❌ Blur approximation |
+| Matches every iOS update | ✅ Automatically | Needs a package update |
+| System sheets, menus, popovers, haptics | ✅ Native behavior | Imitated |
+| VoiceOver &amp; Dynamic Type | ✅ Built in | Partial |
+| iOS 17–18 support | ✅ Classic materials fallback | ✅ |
+| Customizable from Dart | ✅ Colors, images, radius, fonts, glass | ✅ |
 
 ## Features
 
@@ -22,6 +61,8 @@ Everything is configurable from Dart, with no Cupertino widgets involved.
 - **Configurable from Dart**: title, images (SF Symbols, assets, bytes), items, values, colors, background, corner radius, glass variant, fonts and light/dark. Changes apply **live**.
 - **Two-way communication**: every interaction comes back to Dart as a `NativeEvent`, and Dart drives components with `trigger()`, `reset()` and custom commands.
 - **Extensible**: register your own SwiftUI views and use them from Dart.
+- **Copy-paste examples**: every component comes with ready-to-use Dart code in the example app.
+- **Fully documented**: every public API has dartdoc, including each component's config fields, commands and events.
 - **Swift Package Manager** and a privacy manifest are included.
 
 ## Requirements
@@ -34,6 +75,12 @@ Everything is configurable from Dart, with no Cupertino widgets involved.
 | Integration | Swift Package Manager |
 
 ## Installation
+
+```sh
+flutter pub add glassy_ui_ios
+```
+
+or add it to `pubspec.yaml` yourself:
 
 ```yaml
 dependencies:
@@ -313,6 +360,50 @@ The [example app](example) contains all 90 components, a live **Customize** pane
 - iOS only. On other platforms `NativeComponent` shows its `fallback` widget.
 - Picture-in-picture and camera controls are UI only: no video asset and no camera session are used. `MPVolumeView` renders only on physical devices.
 - Every component is a platform view, so prefer a few large components per screen over many small ones.
+
+## FAQ
+
+<details>
+<summary><b>Does it work on Android, web or desktop?</b></summary>
+
+No. The components are Apple's own, so they only exist on iOS. On other platforms `NativeComponent` renders its `fallback` widget, so you can show a Material version there.
+</details>
+
+<details>
+<summary><b>Do my users need iOS 26?</b></summary>
+
+No. The minimum is iOS 17. On iOS 26+ components use Liquid Glass. On iOS 17–18 the same components use classic materials (`.regularMaterial`, `.bordered`…) automatically. Check at runtime with `NativeSystem.info()` → `liquidGlass`.
+</details>
+
+<details>
+<summary><b>My app still uses CocoaPods. Can I use this package?</b></summary>
+
+Yes. Turn on Swift Package Manager for your app (see [Installation](#installation)). Flutter then integrates this plugin through SPM, while your other CocoaPods plugins keep working.
+</details>
+
+<details>
+<summary><b>How do I get the code for a specific component?</b></summary>
+
+Run the [example app](example) and tap the **Code** button on any component, or browse [`example/lib/snippets.dart`](example/lib/snippets.dart). Every snippet is compiled in CI.
+</details>
+
+<details>
+<summary><b>What about performance?</b></summary>
+
+Each component is a platform view. That's fine for whole screens, bars, sheets and cards. Prefer a few larger components per screen over dozens of tiny ones in a scrolling list.
+</details>
+
+<details>
+<summary><b>Can I add my own SwiftUI views?</b></summary>
+
+Yes. See [Custom native components](#custom-native-components).
+</details>
+
+## Support the project
+
+If glassy_ui_ios saves you time, please **give it a 👍 on [pub.dev](https://pub.dev/packages/glassy_ui_ios)** and a **⭐ on [GitHub](https://github.com/rutvikpipariya/glassy_ui_ios)**. It helps other Flutter developers find it.
+
+Found a bug or want a component? [Open an issue](https://github.com/rutvikpipariya/glassy_ui_ios/issues/new/choose). Pull requests are welcome; see [CONTRIBUTING](CONTRIBUTING.md).
 
 ## License
 

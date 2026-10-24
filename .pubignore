@@ -10,9 +10,13 @@
 
 # The README gallery loads these from GitHub; only pubspec screenshots ship.
 screenshots/components/
+screenshots/demo/*
+!screenshots/demo/glass-morphing.gif
 
 # Repository tooling.
 tool/
+.github/
+CONTRIBUTING.md
 
 # Example build output.
 example/build/

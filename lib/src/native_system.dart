@@ -4,6 +4,7 @@ import 'package:flutter/services.dart';
 /// Device information reported by the plugin.
 @immutable
 class NativeSystemInfo {
+  /// Creates device information.
   const NativeSystemInfo({
     required this.systemName,
     required this.systemVersion,
@@ -12,8 +13,13 @@ class NativeSystemInfo {
     required this.components,
   });
 
+  /// Operating system name, e.g. `iOS`.
   final String systemName;
+
+  /// Operating system version, e.g. `26.0`.
   final String systemVersion;
+
+  /// Device model, e.g. `iPhone`.
   final String model;
 
   /// `true` on iOS 26+, where components render with Liquid Glass.
@@ -24,7 +30,28 @@ class NativeSystemInfo {
 }
 
 /// Haptic feedback styles.
-enum NativeHaptic { light, medium, heavy, selection, success, warning, error }
+enum NativeHaptic {
+  /// Light impact.
+  light,
+
+  /// Medium impact.
+  medium,
+
+  /// Heavy impact.
+  heavy,
+
+  /// Selection change.
+  selection,
+
+  /// Success notification.
+  success,
+
+  /// Warning notification.
+  warning,
+
+  /// Error notification.
+  error,
+}
 
 /// System-level helpers of the plugin.
 abstract final class NativeSystem {

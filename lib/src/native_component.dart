@@ -11,6 +11,7 @@ import 'config.dart';
 /// A callback delivered from the native component.
 @immutable
 class NativeEvent {
+  /// Creates an event. [time] defaults to now.
   NativeEvent(
       {required this.component, required this.name, this.value, DateTime? time})
       : time = time ?? DateTime.now();
@@ -23,6 +24,8 @@ class NativeEvent {
 
   /// Payload: `null`, `bool`, `num`, `String`, `List` or `Map`.
   final Object? value;
+
+  /// When the event arrived in Dart.
   final DateTime time;
 
   @override
@@ -114,6 +117,8 @@ class NativeComponent extends StatefulWidget {
 
   /// Native identifier of the component.
   final String componentId;
+
+  /// Content and appearance; changes are applied to the native view live.
   final NativeComponentConfig config;
 
   /// Called for every event the native component emits.

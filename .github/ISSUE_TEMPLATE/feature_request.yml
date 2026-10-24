@@ -1,0 +1,16 @@
+name: Feature or component request
+description: Suggest a new component, option or improvement.
+labels: [enhancement]
+body:
+  - type: textarea
+    id: request
+    attributes:
+      label: What would you like?
+      description: The component or option, and the SwiftUI / UIKit API it maps to if you know it.
+    validations:
+      required: true
+  - type: textarea
+    id: why
+    attributes:
+      label: Use case
+      description: What you're building and why the current components don't cover it.
