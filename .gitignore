@@ -37,3 +37,4 @@ test/
 example/test/
 tool/
 *.py
+example/pubspec.lock
