@@ -12,9 +12,9 @@ RAW = "https://raw.githubusercontent.com/rutvikpipariya/glassy_ui_ios/main"
 COLUMNS = 3
 
 source = (ROOT / "lib/src/component_type.dart").read_text()
-categories = dict(re.findall(r"^  (\w+)\('([^']+)'\)[,;]", source, re.M))
+categories = dict(re.findall(r"^  (\w+)\(\s*'([^']+)'\s*\)[,;]", source, re.M))
 components = re.findall(
-    r"^  (\w+)\('([^']+)', '([^']+)', NativeComponentCategory\.(\w+), '((?:[^'\\]|\\.)*)'", source, re.M
+    r"^  (\w+)\(\s*'([^']+)',\s*'([^']+)',\s*NativeComponentCategory\.(\w+),\s*'((?:[^'\\]|\\.)*)'", source, re.M
 )
 
 sections = []

@@ -9,3 +9,4 @@
 * `NativeComponentController` with `trigger`, `reset`, `send` and an event stream.
 * Custom Swift components via `NativeComponentRegistry`.
 * Swift Package Manager integration and privacy manifest.
+* Example app with copy-paste ready code for every component.

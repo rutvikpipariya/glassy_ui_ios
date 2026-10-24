@@ -221,7 +221,7 @@ await NativeSystem.haptic(NativeHaptic.success);
 ## Component gallery
 
 Screenshots were taken on an iPhone simulator running iOS 27 (Liquid Glass), using each component's default configuration.
-The [example app](example) contains all 90 components and a live **Customize** panel.
+The [example app](example) contains all 90 components, a live **Customize** panel, and a **Code** button with copy-paste ready code for each component (also in [`example/lib/snippets.dart`](example/lib/snippets.dart)).
 
 {{GALLERY}}
 

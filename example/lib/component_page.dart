@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:glassy_ui_ios/glassy_ui_ios.dart';
 
 import 'customize_panel.dart';
+import 'code_sheet.dart';
 import 'main.dart' show screenshotMode;
 
 /// Hosts one native component with a live customize panel and an event log.
@@ -62,6 +63,11 @@ class _ComponentPageState extends State<ComponentPage> {
       appBar: AppBar(
         title: Text(type.title),
         actions: [
+          IconButton(
+            tooltip: 'Code',
+            icon: const Icon(Icons.code),
+            onPressed: () => CodeSheet.show(context, type),
+          ),
           IconButton(
             tooltip: 'Customize',
             icon: const Icon(Icons.tune),
