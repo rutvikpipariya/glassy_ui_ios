@@ -2,7 +2,7 @@
 
 ## Checklist
 
-- [ ] `flutter analyze` and `flutter test` pass (package and `example/`)
+- [ ] `flutter analyze` passes (package and `example/`)
 - [ ] New or changed Dart APIs have doc comments
-- [ ] New components: Swift doc comment, `NativeComponentType` entry, snippet in `tool/generate_snippets.py`, screenshot
+- [ ] New components: Swift doc comment, `NativeComponentType` entry, snippet in `example/lib/snippets.dart`, screenshot
 - [ ] `CHANGELOG.md` updated

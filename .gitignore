@@ -31,3 +31,9 @@ migrate_working_dir/
 .flutter-plugins-dependencies
 /build/
 /coverage/
+
+# Kept local only: tests and Python tooling are not pushed to GitHub.
+test/
+example/test/
+tool/
+*.py

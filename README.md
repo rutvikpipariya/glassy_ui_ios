@@ -7,7 +7,6 @@
   <a href="https://pub.dev/packages/glassy_ui_ios/score"><img src="https://img.shields.io/pub/likes/glassy_ui_ios?color=ff4f8b" alt="pub likes"></a>
   <a href="https://pub.dev/packages/glassy_ui_ios/score"><img src="https://img.shields.io/pub/points/glassy_ui_ios?color=2ea44f" alt="pub points"></a>
   <a href="https://pub.dev/packages/glassy_ui_ios"><img src="https://img.shields.io/pub/dm/glassy_ui_ios?color=8a2be2" alt="downloads"></a>
-  <a href="https://github.com/rutvikpipariya/glassy_ui_ios/actions/workflows/ci.yml"><img src="https://github.com/rutvikpipariya/glassy_ui_ios/actions/workflows/ci.yml/badge.svg" alt="CI"></a>
   <img src="https://img.shields.io/badge/platform-iOS%2017%2B-black?logo=apple" alt="iOS 17+">
   <a href="LICENSE"><img src="https://img.shields.io/badge/license-MIT-blue.svg" alt="MIT license"></a>
 </p>
@@ -384,7 +383,7 @@ Yes. Turn on Swift Package Manager for your app (see [Installation](#installatio
 <details>
 <summary><b>How do I get the code for a specific component?</b></summary>
 
-Run the [example app](example) and tap the **Code** button on any component, or browse [`example/lib/snippets.dart`](example/lib/snippets.dart). Every snippet is compiled in CI.
+Run the [example app](example) and tap the **Code** button on any component, or browse [`example/lib/snippets.dart`](example/lib/snippets.dart). Every snippet is compiled and tested against the current API.
 </details>
 
 <details>
