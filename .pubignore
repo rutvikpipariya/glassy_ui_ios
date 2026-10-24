@@ -1,0 +1,24 @@
+# Mirrors .gitignore (a .pubignore replaces it for `pub publish`).
+.DS_Store
+.dart_tool/
+.idea/
+*.iml
+.swiftpm/
+/build/
+/pubspec.lock
+.flutter-plugins-dependencies
+
+# The README gallery loads these from GitHub; only pubspec screenshots ship.
+screenshots/components/
+
+# Repository tooling.
+tool/
+
+# Example build output.
+example/build/
+example/.dart_tool/
+example/ios/Flutter/ephemeral/
+example/ios/.symlinks/
+example/ios/Pods/
+example/ios/Runner.xcworkspace/xcuserdata/
+example/ios/Runner.xcodeproj/xcuserdata/

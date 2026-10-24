@@ -1,0 +1,45 @@
+name: glassy_ui_ios
+description: >-
+  90 native iOS components (SwiftUI + UIKit) for Flutter with Liquid Glass on
+  iOS 26+, classic styling on iOS 17-18, fully configurable from Dart.
+version: 0.1.0
+homepage: https://github.com/rutvikpipariya/glassy_ui_ios
+repository: https://github.com/rutvikpipariya/glassy_ui_ios
+issue_tracker: https://github.com/rutvikpipariya/glassy_ui_ios/issues
+documentation: https://github.com/rutvikpipariya/glassy_ui_ios#readme
+
+topics:
+  - ios
+  - liquid-glass
+  - swiftui
+  - ui
+  - widget
+
+screenshots:
+  - description: Catalog of the 90 native components.
+    path: screenshots/catalog.png
+  - description: GlassEffectContainer blending glass shapes on iOS 26.
+    path: screenshots/glass_container.png
+  - description: Native toolbar with grouped glass items.
+    path: screenshots/toolbar.png
+  - description: Now Playing media controls with glass.
+    path: screenshots/media_controls.png
+
+environment:
+  sdk: ^3.6.0
+  flutter: '>=3.27.0'
+
+dependencies:
+  flutter:
+    sdk: flutter
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  plugin:
+    platforms:
+      ios:
+        pluginClass: GlassyUiIosPlugin

@@ -1,0 +1,52 @@
+import 'package:flutter/foundation.dart';
+import 'package:flutter/services.dart';
+
+/// Device information reported by the plugin.
+@immutable
+class NativeSystemInfo {
+  const NativeSystemInfo({
+    required this.systemName,
+    required this.systemVersion,
+    required this.model,
+    required this.liquidGlass,
+    required this.components,
+  });
+
+  final String systemName;
+  final String systemVersion;
+  final String model;
+
+  /// `true` on iOS 26+, where components render with Liquid Glass.
+  final bool liquidGlass;
+
+  /// Ids of all registered components, including custom ones.
+  final List<String> components;
+}
+
+/// Haptic feedback styles.
+enum NativeHaptic { light, medium, heavy, selection, success, warning, error }
+
+/// System-level helpers of the plugin.
+abstract final class NativeSystem {
+  static const _channel = MethodChannel('glassy_ui_ios/system');
+
+  /// Returns `null` on platforms other than iOS.
+  static Future<NativeSystemInfo?> info() async {
+    if (defaultTargetPlatform != TargetPlatform.iOS) return null;
+    final map = await _channel.invokeMapMethod<String, Object?>('getInfo');
+    if (map == null) return null;
+    return NativeSystemInfo(
+      systemName: map['systemName'] as String? ?? 'iOS',
+      systemVersion: map['systemVersion'] as String? ?? '',
+      model: map['model'] as String? ?? '',
+      liquidGlass: map['liquidGlass'] as bool? ?? false,
+      components: (map['components'] as List?)?.cast<String>() ?? const [],
+    );
+  }
+
+  /// Plays native haptic feedback.
+  static Future<void> haptic([NativeHaptic style = NativeHaptic.light]) async {
+    if (defaultTargetPlatform != TargetPlatform.iOS) return;
+    await _channel.invokeMethod<void>('haptic', style.name);
+  }
+}
