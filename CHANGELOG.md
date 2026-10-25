@@ -1,3 +1,9 @@
+## 0.3.1
+
+* README: a **Widget examples** section with copy-paste code for every
+  `Glass…` widget and native presenter, grouped by section, plus a full
+  screen example.
+
 ## 0.3.0
 
 * Typed `Glass…` widgets for every everyday control, sized like normal

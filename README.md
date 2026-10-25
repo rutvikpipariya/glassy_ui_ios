@@ -84,7 +84,7 @@ or add it to `pubspec.yaml` yourself:
 
 ```yaml
 dependencies:
-  glassy_ui_ios: ^0.3.0
+  glassy_ui_ios: ^0.3.1
 ```
 
 This plugin is distributed with **Swift Package Manager**, so turn it on for your app in `pubspec.yaml`:

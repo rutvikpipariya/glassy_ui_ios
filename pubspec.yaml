@@ -2,7 +2,7 @@ name: glassy_ui_ios
 description: >-
   90 native iOS components for Flutter built with SwiftUI and UIKit. Real
   Liquid Glass on iOS 26+, classic styling on iOS 17-18, customizable from Dart.
-version: 0.3.0
+version: 0.3.1
 homepage: https://github.com/rutvikpipariya/glassy_ui_ios
 repository: https://github.com/rutvikpipariya/glassy_ui_ios
 issue_tracker: https://github.com/rutvikpipariya/glassy_ui_ios/issues
