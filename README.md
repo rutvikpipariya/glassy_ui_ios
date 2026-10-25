@@ -16,6 +16,7 @@
 <p align="center">
   <a href="#installation">Installation</a> ·
   <a href="#quick-start">Quick start</a> ·
+  <a href="#widget-examples">Widget examples</a> ·
   <a href="#component-gallery">All 90 components</a> ·
   <a href="#faq">FAQ</a>
 </p>
@@ -194,7 +195,7 @@ Native UI that appears over the app is one call. Each returns what the user chos
 
 Each widget is a platform view, which takes every touch inside its bounds, so give it the size it needs (`width` / `height`). Inside scroll views the widgets only claim taps, so drags still scroll the page; sliders also claim horizontal drags, and wheels and calendars claim all drags.
 
-The [example app](example) shows every widget on its **Widgets** tab ([`example/lib/widgets_gallery.dart`](example/lib/widgets_gallery.dart)).
+Copy-paste code for each one is in [Widget examples](#widget-examples) below; the [example app](example) shows them all on its **Widgets** tab ([`example/lib/widgets_gallery.dart`](example/lib/widgets_gallery.dart)).
 
 ### Controlling a component from Dart
 
@@ -225,6 +226,665 @@ setState(() {
     style: config.style.copyWith(tintColor: Colors.orange, glass: NativeGlass.clear),
   );
 });
+```
+
+## Widget examples
+
+Copy-paste examples for every `Glass…` widget and native presenter, grouped like the [table above](#glass-widgets). Each snippet goes in a `build` method; the ones with a value keep it in your `State` and call `setState` in the callback. Every snippet also works on Android, where it shows the Material fallback.
+
+- [Navigation](#navigation): [tab bar](#glasstabbar) · [toolbar](#glasstoolbar) · [back & close](#glassbackbutton--glassclosebutton)
+- [Buttons](#buttons): [button](#glassbutton) · [icon button](#glassiconbutton) · [floating action button](#glassfloatingactionbutton) · [avatar](#glassavatarbutton) · [image button](#glassimagebutton)
+- [Menus](#menus): [menu button](#glassmenubutton) · [pop-up button](#glasspopupbutton)
+- [Controls](#controls): [segmented control](#glasssegmentedcontrol) · [switch](#glassswitch) · [stepper](#glassstepper) · [slider](#glassslider) · [page indicator](#glasspageindicator) · [checkbox](#glasscheckbox)
+- [Input & pickers](#input--pickers): [search bar](#glasssearchbar) · [text field](#glasstextfield) · [date picker](#glassdatepicker) · [wheel picker](#glasswheelpicker) · [color picker](#glasscolorpicker)
+- [Progress & media](#progress--media): [progress](#glassprogressindicator) · [play / pause](#glassplaypausebutton) · [media controls](#glassmediacontrols)
+- [Alerts, sheets & toasts](#alerts-sheets--toasts): [alert](#nativedialogalert) · [action sheet](#nativedialogactionsheet) · [prompt](#nativedialogprompt) · [sheet](#nativesheetshow) · [toast](#nativetoastshow) · [share](#nativeshareshare)
+- [Full screen example](#full-screen-example)
+
+### Navigation
+
+#### `GlassTabBar`
+
+A floating glass tab bar. Only the bar is native; the pages stay Flutter widgets.
+
+```dart
+int tab = 0;
+
+Scaffold(
+  extendBody: true, // pages scroll under the glass bar
+  body: IndexedStack(index: tab, children: pages),
+  bottomNavigationBar: GlassTabBar(
+    items: const [
+      NativeItem.symbol('Home', 'house.fill'),
+      NativeItem.symbol('Search', 'magnifyingglass'),
+      NativeItem.symbol('Inbox', 'tray.fill', badge: '3'),
+      NativeItem.symbol('Profile', 'person.crop.circle.fill'),
+    ],
+    selectedIndex: tab,
+    onChanged: (i) => setState(() => tab = i),
+    expandable: false, // true: only the selected tab shows its title
+    fallback: NavigationBar(
+      selectedIndex: tab,
+      onDestinationSelected: (i) => setState(() => tab = i),
+      destinations: const [
+        NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+        NavigationDestination(icon: Icon(Icons.search), label: 'Search'),
+        NavigationDestination(icon: Icon(Icons.inbox), label: 'Inbox'),
+        NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
+      ],
+    ),
+  ),
+);
+```
+
+Placed anywhere other than the bottom of the screen, pass `safeArea: false`.
+
+#### `GlassToolbar`
+
+A glass capsule of buttons. Items with an icon show the icon; the destructive role is red.
+
+```dart
+GlassToolbar(
+  width: 240,
+  items: const [
+    NativeItem.symbol('Share', 'square.and.arrow.up'),
+    NativeItem.symbol('Favorite', 'heart'),
+    NativeItem.symbol('Info', 'info.circle'),
+    NativeItem.symbol('Delete', 'trash', role: NativeItemRole.destructive),
+  ],
+  onPressed: (index) => debugPrint('Toolbar button $index'),
+)
+```
+
+#### `GlassBackButton` · `GlassCloseButton`
+
+Both pop the current route unless you pass `onPressed`.
+
+```dart
+AppBar(
+  leading: const GlassBackButton(),
+  actions: [GlassCloseButton(onPressed: () => Navigator.pop(context))],
+)
+```
+
+### Buttons
+
+#### `GlassButton`
+
+```dart
+GlassButton(
+  label: 'Glass',
+  onPressed: () {},
+)
+
+GlassButton(
+  label: 'Continue',
+  icon: const NativeImage.symbol('arrow.right'),
+  prominent: true, // filled glass
+  size: NativeControlSize.large,
+  onPressed: () {},
+)
+```
+
+#### `GlassIconButton`
+
+```dart
+GlassIconButton(
+  icon: const NativeImage.symbol('person.crop.circle'),
+  semanticLabel: 'Profile',
+  onPressed: () {},
+  fallback: IconButton(icon: const Icon(Icons.person), onPressed: () {}),
+)
+
+GlassIconButton(
+  icon: const NativeImage.symbol('plus'),
+  prominent: true,
+  onPressed: () {},
+)
+```
+
+#### `GlassFloatingActionButton`
+
+Without `actions` it calls `onPressed`; with `actions` it expands into labelled glass buttons.
+
+```dart
+Scaffold(
+  floatingActionButton: GlassFloatingActionButton(
+    actions: const [
+      NativeItem.symbol('Photo', 'photo'),
+      NativeItem.symbol('Note', 'note.text'),
+      NativeItem.symbol('Reminder', 'checklist'),
+    ],
+    onActionSelected: (index) => debugPrint('Create $index'),
+    fallback: FloatingActionButton(
+      onPressed: () {},
+      child: const Icon(Icons.add),
+    ),
+  ),
+);
+```
+
+#### `GlassAvatarButton`
+
+An avatar (initials or photo) that opens a native menu.
+
+```dart
+GlassAvatarButton(
+  initials: 'RP',
+  // image: const NativeImage.asset('assets/me.jpg'),
+  size: 40,
+  items: const [
+    NativeItem.symbol('Profile', 'person'),
+    NativeItem.symbol('Settings', 'gear'),
+    NativeItem.symbol('Sign Out', 'rectangle.portrait.and.arrow.right',
+        role: NativeItemRole.destructive),
+  ],
+  onSelected: (id) => debugPrint(id), // 'Profile', 'Settings', 'Sign Out'
+)
+```
+
+#### `GlassImageButton`
+
+Artwork with a glass badge, e.g. a video or album cover.
+
+```dart
+GlassImageButton(
+  image: const NativeImage.asset('assets/cover.jpg'),
+  badge: 'play.fill', // null hides the badge
+  width: 160,
+  height: 160,
+  cornerRadius: 18,
+  onPressed: () {},
+)
+```
+
+### Menus
+
+#### `GlassMenuButton`
+
+Entries support icons, the destructive role and nested `children` (submenus). `onSelected` gets the entry's `id`, or its title.
+
+```dart
+GlassMenuButton(
+  title: 'File',
+  width: 140, // platform views can't size themselves: fit the title
+  items: const [
+    NativeItem.symbol('New File', 'doc.badge.plus'),
+    NativeItem(
+      title: 'Export As',
+      symbol: 'square.and.arrow.up',
+      children: [NativeItem(title: 'PDF'), NativeItem(title: 'PNG')],
+    ),
+    NativeItem.symbol('Delete', 'trash', role: NativeItemRole.destructive),
+  ],
+  onSelected: (id) => debugPrint(id),
+)
+```
+
+An icon-only "more" menu:
+
+```dart
+GlassMenuButton(
+  icon: const NativeImage.symbol('ellipsis'),
+  showChevron: false,
+  prominent: false,
+  width: 52,
+  items: const [
+    NativeItem.symbol('Select', 'checkmark.circle'),
+    NativeItem.symbol('View Options', 'slider.horizontal.3'),
+  ],
+  onSelected: (id) => debugPrint(id),
+)
+```
+
+A menu that shows an alert for the chosen option:
+
+```dart
+GlassMenuButton(
+  title: 'Choose an option',
+  width: 260,
+  items: const [
+    NativeItem(title: 'Option 1'),
+    NativeItem(title: 'Option 2'),
+    NativeItem(title: 'Option 3'),
+  ],
+  onSelected: (option) => NativeDialog.alert(
+    title: 'Selected',
+    message: 'You selected $option',
+    context: context,
+  ),
+)
+```
+
+#### `GlassPopupButton`
+
+Shows the current choice and opens a native picker menu.
+
+```dart
+int repeat = 0;
+
+GlassPopupButton(
+  label: 'Repeat',
+  items: const [
+    NativeItem(title: 'Never'),
+    NativeItem(title: 'Daily'),
+    NativeItem(title: 'Weekly'),
+    NativeItem(title: 'Monthly'),
+  ],
+  selectedIndex: repeat,
+  onChanged: (i) => setState(() => repeat = i),
+)
+```
+
+### Controls
+
+#### `GlassSegmentedControl`
+
+```dart
+int range = 1;
+
+GlassSegmentedControl(
+  items: const [
+    NativeItem(title: 'Day'),
+    NativeItem(title: 'Week'),
+    NativeItem(title: 'Month'),
+  ],
+  selectedIndex: range,
+  onChanged: (i) => setState(() => range = i),
+)
+```
+
+#### `GlassSwitch`
+
+```dart
+bool wifi = true;
+
+GlassSwitch(
+  label: 'Wi-Fi', // omit for a bare switch
+  value: wifi,
+  onChanged: (v) => setState(() => wifi = v),
+)
+```
+
+#### `GlassStepper`
+
+```dart
+double guests = 2;
+
+GlassStepper(
+  label: 'Guests',
+  value: guests,
+  min: 1,
+  max: 10,
+  step: 1,
+  onChanged: (v) => setState(() => guests = v),
+)
+```
+
+#### `GlassSlider`
+
+```dart
+double brightness = 0.6;
+double rating = 3;
+
+GlassSlider(
+  value: brightness,
+  minIcon: 'sun.min',
+  maxIcon: 'sun.max.fill',
+  onChanged: (v) => setState(() => brightness = v),
+  onChangeEnd: (v) => debugPrint('Saved $v'),
+)
+
+GlassSlider(
+  value: rating,
+  min: 1,
+  max: 5,
+  divisions: 4, // snaps to 1, 2, 3, 4, 5
+  onChanged: (v) => setState(() => rating = v),
+)
+```
+
+#### `GlassPageIndicator`
+
+```dart
+int page = 0;
+
+GlassPageIndicator(
+  count: 4,
+  currentIndex: page,
+  onChanged: (i) => setState(() => page = i), // tapped dot
+)
+```
+
+#### `GlassCheckbox`
+
+```dart
+bool terms = false;
+
+GlassCheckbox(
+  label: 'I agree to the terms',
+  value: terms,
+  onChanged: (v) => setState(() => terms = v),
+)
+```
+
+### Input & pickers
+
+#### `GlassSearchBar`
+
+```dart
+final search = GlassTextFieldController(); // optional: clear(), focus(), unfocus()
+String query = '';
+
+GlassSearchBar(
+  placeholder: 'Search photos',
+  controller: search,
+  onChanged: (q) => setState(() => query = q),
+  onSubmitted: (q) => debugPrint('Search "$q"'),
+)
+```
+
+#### `GlassTextField`
+
+```dart
+GlassTextField(
+  placeholder: 'Email',
+  keyboardType: GlassKeyboardType.email,
+  onChanged: (text) => debugPrint(text),
+  onSubmitted: (text) => debugPrint('Done: $text'),
+)
+
+const GlassTextField(placeholder: 'Password', obscureText: true)
+
+const GlassTextField(placeholder: 'Notes', multiline: true)
+```
+
+#### `GlassDatePicker`
+
+```dart
+DateTime date = DateTime.now();
+
+// Compact field with a label
+GlassDatePicker(
+  label: 'Date',
+  value: date,
+  onChanged: (d) => setState(() => date = d),
+)
+
+// Time only
+GlassDatePicker(
+  label: 'Time',
+  value: date,
+  mode: GlassDatePickerMode.time,
+  onChanged: (d) => setState(() => date = d),
+)
+
+// Inline calendar, limited to the next year
+GlassDatePicker(
+  value: date,
+  style: GlassDatePickerStyle.graphical, // or .wheel
+  firstDate: DateTime.now(),
+  lastDate: DateTime.now().add(const Duration(days: 365)),
+  onChanged: (d) => setState(() => date = d),
+)
+```
+
+#### `GlassWheelPicker`
+
+```dart
+int size = 1;
+
+GlassWheelPicker(
+  items: const [
+    NativeItem(title: 'Small'),
+    NativeItem(title: 'Medium'),
+    NativeItem(title: 'Large'),
+  ],
+  selectedIndex: size,
+  onChanged: (i) => setState(() => size = i),
+)
+```
+
+#### `GlassColorPicker`
+
+iOS only: pass a `fallback` for other platforms.
+
+```dart
+Color accent = Colors.indigo;
+
+GlassColorPicker(
+  label: 'Accent colour',
+  value: accent,
+  supportsOpacity: false,
+  onChanged: (c) => setState(() => accent = c),
+  fallback: const Text('Colour picker is available on iOS'),
+)
+```
+
+### Progress & media
+
+#### `GlassProgressIndicator`
+
+```dart
+double progress = 0.4;
+
+GlassProgressIndicator(value: progress, label: 'Uploading') // bar
+
+GlassProgressIndicator(
+  value: progress,
+  style: GlassProgressStyle.circular, // ring with percentage
+)
+
+const GlassProgressIndicator() // no value: spinner
+```
+
+#### `GlassPlayPauseButton`
+
+```dart
+bool playing = false;
+
+GlassPlayPauseButton(
+  isPlaying: playing,
+  onChanged: (v) => setState(() => playing = v),
+)
+```
+
+#### `GlassMediaControls`
+
+```dart
+GlassMediaControls(
+  isPlaying: playing,
+  onPlayPause: (v) => setState(() => playing = v),
+  onPrevious: () => debugPrint('Previous'),
+  onNext: () => debugPrint('Next'),
+)
+```
+
+### Alerts, sheets & toasts
+
+Pass `context:` so the iOS UI follows your app's light/dark theme and other platforms get the Material equivalent.
+
+#### `NativeDialog.alert`
+
+Returns the id (or title) of the tapped action.
+
+```dart
+final choice = await NativeDialog.alert(
+  title: 'Delete photo?',
+  message: 'This photo will be deleted from all your devices.',
+  actions: const [
+    NativeItem(title: 'Delete', role: NativeItemRole.destructive),
+    NativeItem(title: 'Cancel', role: NativeItemRole.cancel),
+  ],
+  context: context,
+);
+if (choice == 'Delete') deletePhoto();
+```
+
+Without `actions` it shows a single "OK".
+
+#### `NativeDialog.actionSheet`
+
+```dart
+final choice = await NativeDialog.actionSheet(
+  title: 'You have unsaved changes',
+  actions: const [
+    NativeItem(title: 'Discard', role: NativeItemRole.destructive),
+    NativeItem(title: 'Save Draft'),
+    NativeItem(title: 'Cancel', role: NativeItemRole.cancel),
+  ],
+  context: context,
+);
+```
+
+#### `NativeDialog.prompt`
+
+Returns the entered text, or `null` when cancelled.
+
+```dart
+final name = await NativeDialog.prompt(
+  title: 'Rename',
+  placeholder: 'Name',
+  initialValue: 'Holiday.jpg',
+  confirmLabel: 'Save',
+  context: context,
+);
+if (name != null) rename(name);
+```
+
+#### `NativeSheet.show`
+
+Returns the id (or title) of the tapped item, or `null` when dismissed.
+
+```dart
+final target = await NativeSheet.show(
+  title: 'Share to',
+  message: 'Choose where to send the photo.',
+  items: const [
+    NativeItem.symbol('Messages', 'message.fill'),
+    NativeItem.symbol('Mail', 'envelope.fill'),
+    NativeItem(title: 'AirDrop', subtitle: 'Nearby devices', symbol: 'airplayaudio'),
+  ],
+  detents: const [NativeSheetDetent.medium, NativeSheetDetent.large],
+  context: context,
+);
+```
+
+#### `NativeToast.show`
+
+A glass toast over the whole app; touches pass through it.
+
+```dart
+NativeToast.show(
+  'Copied to clipboard',
+  icon: 'doc.on.doc.fill',
+  position: NativeToastPosition.top, // or .bottom
+  duration: const Duration(seconds: 2),
+  context: context,
+);
+```
+
+#### `NativeShare.share`
+
+Returns whether the user completed a share.
+
+```dart
+await NativeShare.share(
+  text: 'Check out glassy_ui_ios',
+  url: 'https://pub.dev/packages/glassy_ui_ios',
+);
+```
+
+### Full screen example
+
+A complete app using the tab bar, an app bar button, a menu and an alert:
+
+```dart
+import 'package:flutter/material.dart';
+import 'package:glassy_ui_ios/glassy_ui_ios.dart';
+
+void main() => runApp(const MaterialApp(home: HomePage()));
+
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int tab = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    final pages = [
+      _Page(
+        title: 'Home',
+        onProfile: () => setState(() => tab = 1),
+        child: GlassMenuButton(
+          title: 'Choose an option',
+          width: 260,
+          items: const [NativeItem(title: 'Option 1'), NativeItem(title: 'Option 2')],
+          onSelected: (option) => NativeDialog.alert(
+            title: 'Selected',
+            message: 'You selected $option',
+            context: context,
+          ),
+        ),
+      ),
+      const _Page(title: 'Profile', child: Text('Profile Screen')),
+    ];
+
+    return Scaffold(
+      extendBody: true,
+      body: IndexedStack(index: tab, children: pages),
+      bottomNavigationBar: GlassTabBar(
+        items: const [
+          NativeItem.symbol('Home', 'house.fill'),
+          NativeItem.symbol('Profile', 'person.crop.circle.fill'),
+        ],
+        selectedIndex: tab,
+        onChanged: (i) => setState(() => tab = i),
+        fallback: NavigationBar(
+          selectedIndex: tab,
+          onDestinationSelected: (i) => setState(() => tab = i),
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.home), label: 'Home'),
+            NavigationDestination(icon: Icon(Icons.person), label: 'Profile'),
+          ],
+        ),
+      ),
+    );
+  }
+}
+
+class _Page extends StatelessWidget {
+  const _Page({required this.title, required this.child, this.onProfile});
+
+  final String title;
+  final Widget child;
+  final VoidCallback? onProfile;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text(title),
+        actions: [
+          if (onProfile != null)
+            GlassIconButton(
+              icon: const NativeImage.symbol('person.crop.circle'),
+              semanticLabel: 'Profile',
+              onPressed: onProfile!,
+              fallback: IconButton(icon: const Icon(Icons.person), onPressed: onProfile),
+            ),
+          const SizedBox(width: 8),
+        ],
+      ),
+      body: Center(child: child),
+    );
+  }
+}
 ```
 
 ## Configuration
