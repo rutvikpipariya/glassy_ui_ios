@@ -10,6 +10,7 @@ public final class GlassyUiIosPlugin: NSObject, FlutterPlugin {
   public static func register(with registrar: FlutterPluginRegistrar) {
     NativeAssets.lookupKey = { registrar.lookupKey(forAsset: $0) }
     NativeComponentRegistry.register(BuiltInComponents.all)
+    NativeComponentRegistry.register(EmbeddableComponents.all)
 
     let messenger = registrar.messenger()
     registrar.register(NativeComponentFactory(messenger: messenger), withId: viewType)
@@ -31,9 +32,45 @@ public final class GlassyUiIosPlugin: NSObject, FlutterPlugin {
     case "haptic":
       Self.playHaptic(call.arguments as? String ?? "light")
       result(nil)
+    case "showAlert":
+      Self.showAlert(call.arguments as? [String: Any] ?? [:], result: result)
     default:
       result(FlutterMethodNotImplemented)
     }
+  }
+
+  /// Presents a `UIAlertController` from the top-most controller and replies
+  /// with the id of the chosen action (`nil` if nothing could be presented).
+  private static func showAlert(_ arguments: [String: Any], result: @escaping FlutterResult) {
+    guard let presenter = UIApplication.shared.topViewController else {
+      result(nil)
+      return
+    }
+    let style: UIAlertController.Style = arguments["style"] as? String == "actionSheet" ? .actionSheet : .alert
+    let alert = UIAlertController(
+      title: arguments["title"] as? String,
+      message: arguments["message"] as? String,
+      preferredStyle: style
+    )
+    var actions = (arguments["actions"] as? [Any] ?? []).compactMap { NativeItem($0) }
+    if actions.isEmpty { actions = [NativeItem(title: "OK", role: .cancel)] }
+    for item in actions {
+      let actionStyle: UIAlertAction.Style = switch item.role {
+      case .destructive: .destructive
+      case .cancel: .cancel
+      case .normal: .default
+      }
+      let action = UIAlertAction(title: item.title, style: actionStyle) { _ in result(item.id) }
+      action.isEnabled = item.isEnabled
+      alert.addAction(action)
+    }
+    // Action sheets on iPad need an anchor; center it on the presenter.
+    if let popover = alert.popoverPresentationController {
+      popover.sourceView = presenter.view
+      popover.sourceRect = CGRect(x: presenter.view.bounds.midX, y: presenter.view.bounds.midY, width: 0, height: 0)
+      popover.permittedArrowDirections = []
+    }
+    presenter.present(alert, animated: true)
   }
 
   private static func playHaptic(_ style: String) {

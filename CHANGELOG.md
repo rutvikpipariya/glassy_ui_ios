@@ -1,3 +1,14 @@
+## 0.2.0
+
+* Embeddable widgets for use inside your own Flutter layouts:
+  `GlassTabBar` (bar only, for `Scaffold.bottomNavigationBar`),
+  `GlassIconButton` and `GlassMenuButton`. Each one is a single native
+  control on a transparent background, and its tint and light/dark
+  appearance come from the app's `Theme`. A `fallback` widget is shown on
+  other platforms.
+* `NativeDialog.alert` and `NativeDialog.actionSheet` present a native
+  `UIAlertController` from Dart and return the id of the tapped action.
+
 ## 0.1.2
 
 * Every public API is documented. Each `NativeComponentType` value lists the

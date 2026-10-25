@@ -4,5 +4,7 @@ library;
 
 export 'src/component_type.dart';
 export 'src/config.dart';
+export 'src/glass_widgets.dart';
 export 'src/native_component.dart';
+export 'src/native_dialog.dart';
 export 'src/native_system.dart';

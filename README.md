@@ -83,7 +83,7 @@ or add it to `pubspec.yaml` yourself:
 
 ```yaml
 dependencies:
-  glassy_ui_ios: ^0.1.2
+  glassy_ui_ios: ^0.2.0
 ```
 
 This plugin is distributed with **Swift Package Manager**, so turn it on for your app in `pubspec.yaml`:
@@ -122,6 +122,50 @@ SizedBox(
 ```
 
 `NativeComponent` sizes itself to its parent, like any platform view. Give it bounded constraints: an `Expanded`, a `SizedBox`, or a full page.
+
+### Embeddable widgets
+
+The catalog components fill their parent with demo content. For single controls inside your own Flutter layout, use these widgets. Each one is a single native control on a transparent background, and its tint and light/dark appearance come from your app's `Theme`:
+
+```dart
+Scaffold(
+  extendBody: true, // pages scroll under the glass bar
+  appBar: AppBar(
+    title: const Text('Home'),
+    actions: [
+      GlassIconButton(
+        icon: const NativeImage.symbol('person.crop.circle'),
+        onPressed: openProfile,
+      ),
+    ],
+  ),
+  body: Center(
+    child: GlassMenuButton(
+      title: 'Choose an option',
+      width: 260,
+      items: const [NativeItem(title: 'Option 1'), NativeItem(title: 'Option 2')],
+      onSelected: (id) => NativeDialog.alert(title: 'Selected', message: id),
+    ),
+  ),
+  bottomNavigationBar: GlassTabBar(
+    items: const [
+      NativeItem.symbol('Home', 'house.fill'),
+      NativeItem.symbol('Profile', 'person.crop.circle.fill', badge: '2'),
+    ],
+    selectedIndex: index,
+    onChanged: (i) => setState(() => index = i),
+  ),
+);
+```
+
+| Widget | Native control |
+| --- | --- |
+| `GlassTabBar` | Floating glass tab bar for `Scaffold.bottomNavigationBar`; only the bar is native |
+| `GlassIconButton` | Circular glass icon button, e.g. in `AppBar.actions` |
+| `GlassMenuButton` | Glass button opening a native `Menu` (roles and submenus supported) |
+| `NativeDialog.alert` / `.actionSheet` | `UIAlertController`; returns the id of the tapped action |
+
+Each widget takes a `fallback` that is shown on other platforms, so one widget tree can serve iOS and Android.
 
 ### Controlling a component from Dart
 
