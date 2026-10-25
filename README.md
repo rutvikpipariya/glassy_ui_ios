@@ -83,7 +83,7 @@ or add it to `pubspec.yaml` yourself:
 
 ```yaml
 dependencies:
-  glassy_ui_ios: ^0.2.0
+  glassy_ui_ios: ^0.3.0
 ```
 
 This plugin is distributed with **Swift Package Manager**, so turn it on for your app in `pubspec.yaml`:
@@ -123,9 +123,9 @@ SizedBox(
 
 `NativeComponent` sizes itself to its parent, like any platform view. Give it bounded constraints: an `Expanded`, a `SizedBox`, or a full page.
 
-### Embeddable widgets
+### Glass widgets
 
-The catalog components fill their parent with demo content. For single controls inside your own Flutter layout, use these widgets. Each one is a single native control on a transparent background, and its tint and light/dark appearance come from your app's `Theme`:
+Every everyday control is also a typed Flutter widget: named parameters, typed callbacks, a normal widget size, and a tint and light/dark appearance taken from your app's `Theme`. They all start with `Glass`, so autocomplete lists them:
 
 ```dart
 Scaffold(
@@ -139,13 +139,27 @@ Scaffold(
       ),
     ],
   ),
-  body: Center(
-    child: GlassMenuButton(
-      title: 'Choose an option',
-      width: 260,
-      items: const [NativeItem(title: 'Option 1'), NativeItem(title: 'Option 2')],
-      onSelected: (id) => NativeDialog.alert(title: 'Selected', message: id),
-    ),
+  body: ListView(
+    padding: const EdgeInsets.all(16),
+    children: [
+      GlassSegmentedControl(
+        items: const [NativeItem(title: 'Day'), NativeItem(title: 'Week')],
+        selectedIndex: range,
+        onChanged: (i) => setState(() => range = i),
+      ),
+      GlassSwitch(
+        label: 'Wi-Fi',
+        value: wifi,
+        onChanged: (v) => setState(() => wifi = v),
+      ),
+      GlassSlider(value: volume, onChanged: (v) => setState(() => volume = v)),
+      GlassMenuButton(
+        title: 'Choose an option',
+        width: 260,
+        items: const [NativeItem(title: 'Option 1'), NativeItem(title: 'Option 2')],
+        onSelected: (id) => NativeDialog.alert(title: 'Selected', message: id),
+      ),
+    ],
   ),
   bottomNavigationBar: GlassTabBar(
     items: const [
@@ -158,14 +172,29 @@ Scaffold(
 );
 ```
 
-| Widget | Native control |
+| Group | Widgets |
 | --- | --- |
-| `GlassTabBar` | Floating glass tab bar for `Scaffold.bottomNavigationBar`; only the bar is native |
-| `GlassIconButton` | Circular glass icon button, e.g. in `AppBar.actions` |
-| `GlassMenuButton` | Glass button opening a native `Menu` (roles and submenus supported) |
-| `NativeDialog.alert` / `.actionSheet` | `UIAlertController`; returns the id of the tapped action |
+| Navigation | `GlassTabBar` (also `expandable`), `GlassToolbar`, `GlassBackButton`, `GlassCloseButton` |
+| Buttons | `GlassButton`, `GlassIconButton`, `GlassFloatingActionButton` (expands into actions), `GlassAvatarButton`, `GlassImageButton` |
+| Menus | `GlassMenuButton` (submenus, overflow), `GlassPopupButton` |
+| Controls | `GlassSegmentedControl`, `GlassSwitch`, `GlassStepper`, `GlassSlider`, `GlassPageIndicator`, `GlassCheckbox` |
+| Input | `GlassTextField` (secure, multiline, keyboards), `GlassSearchBar`, `GlassDatePicker` (compact, wheel, calendar), `GlassWheelPicker`, `GlassColorPicker` |
+| Progress & media | `GlassProgressIndicator` (bar, ring, spinner), `GlassPlayPauseButton`, `GlassMediaControls` |
 
-Each widget takes a `fallback` that is shown on other platforms, so one widget tree can serve iOS and Android.
+Native UI that appears over the app is one call. Each returns what the user chose:
+
+| Call | Native UI |
+| --- | --- |
+| `NativeDialog.alert` / `.actionSheet` / `.prompt` | `UIAlertController`, with a text field for `prompt` |
+| `NativeSheet.show` | Sheet with medium / large detents listing options |
+| `NativeToast.show` | Glass toast at the top or bottom; touches pass through |
+| `NativeShare.share` | `UIActivityViewController` |
+
+**On Android and other platforms** most widgets fall back to their Material equivalent (`Switch`, `Slider`, `SegmentedButton`, `TextField`, `MenuAnchor`…), and every widget takes a `fallback` to show your own instead. Pass `context:` to the dialog, sheet and toast calls to get Material dialogs, bottom sheets and snack bars there; this also makes the iOS versions follow your app's light/dark theme.
+
+Each widget is a platform view, which takes every touch inside its bounds, so give it the size it needs (`width` / `height`). Inside scroll views the widgets only claim taps, so drags still scroll the page; sliders also claim horizontal drags, and wheels and calendars claim all drags.
+
+The [example app](example) shows every widget on its **Widgets** tab ([`example/lib/widgets_gallery.dart`](example/lib/widgets_gallery.dart)).
 
 ### Controlling a component from Dart
 

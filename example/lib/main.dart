@@ -3,6 +3,7 @@ import 'package:flutter/services.dart';
 import 'package:glassy_ui_ios/glassy_ui_ios.dart';
 
 import 'component_page.dart';
+import 'widgets_gallery.dart';
 
 void main() => runApp(const NativeComponentsApp());
 
@@ -42,7 +43,49 @@ class NativeComponentsApp extends StatelessWidget {
         brightness: Brightness.dark,
         useMaterial3: true,
       ),
-      home: const CatalogPage(),
+      home: const HomePage(),
+    );
+  }
+}
+
+/// Two tabs: the `Glass…` widgets and the 90-component catalog.
+class HomePage extends StatefulWidget {
+  const HomePage({super.key});
+
+  @override
+  State<HomePage> createState() => _HomePageState();
+}
+
+class _HomePageState extends State<HomePage> {
+  int _tab = 0;
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      extendBody: true,
+      body: IndexedStack(
+        index: _tab,
+        children: const [WidgetsGalleryPage(), CatalogPage()],
+      ),
+      bottomNavigationBar: GlassTabBar(
+        items: const [
+          NativeItem.symbol('Widgets', 'square.grid.2x2.fill'),
+          NativeItem.symbol('Catalog', 'books.vertical.fill'),
+        ],
+        selectedIndex: _tab,
+        onChanged: (i) => setState(() => _tab = i),
+        fallback: NavigationBar(
+          selectedIndex: _tab,
+          onDestinationSelected: (i) => setState(() => _tab = i),
+          destinations: const [
+            NavigationDestination(icon: Icon(Icons.widgets), label: 'Widgets'),
+            NavigationDestination(
+              icon: Icon(Icons.menu_book),
+              label: 'Catalog',
+            ),
+          ],
+        ),
+      ),
     );
   }
 }
@@ -142,7 +185,8 @@ class _CatalogPageState extends State<CatalogPage> {
               category,
               filtered.where((t) => t.category == category).toList(),
             ),
-          const SliverToBoxAdapter(child: SizedBox(height: 32)),
+          // Room for the floating glass tab bar.
+          const SliverToBoxAdapter(child: SizedBox(height: 120)),
         ],
       ),
     );

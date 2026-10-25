@@ -1,3 +1,29 @@
+## 0.3.0
+
+* Typed `Glass…` widgets for every everyday control, sized like normal
+  widgets and themed from the app:
+  * Navigation: `GlassToolbar`, `GlassBackButton`, `GlassCloseButton`;
+    `GlassTabBar` gains `expandable` and `safeArea`.
+  * Buttons: `GlassButton`, `GlassFloatingActionButton`, `GlassAvatarButton`,
+    `GlassImageButton`; `GlassIconButton` gains `semanticLabel`.
+  * Menus: `GlassPopupButton`; `GlassMenuButton` gains `showChevron` for
+    icon-only (overflow) menus.
+  * Controls: `GlassSegmentedControl`, `GlassSwitch`, `GlassStepper`,
+    `GlassSlider`, `GlassPageIndicator`, `GlassCheckbox`.
+  * Input: `GlassTextField`, `GlassSearchBar` (with
+    `GlassTextFieldController`), `GlassDatePicker`, `GlassWheelPicker`,
+    `GlassColorPicker`.
+  * Progress & media: `GlassProgressIndicator`, `GlassPlayPauseButton`,
+    `GlassMediaControls`.
+* Most widgets fall back to their Material equivalent on other platforms.
+* Inside scroll views the widgets claim only taps (sliders also claim
+  horizontal drags; wheels and calendars all drags), so lists still scroll.
+* New native presenters: `NativeDialog.prompt`, `NativeSheet.show`,
+  `NativeToast.show` and `NativeShare.share`. With a `context:` they follow
+  the app's light/dark theme and show Material equivalents off iOS.
+* Example app: a **Widgets** tab with every widget and presenter, next to the
+  component catalog, behind a `GlassTabBar`.
+
 ## 0.2.0
 
 * Embeddable widgets for use inside your own Flutter layouts:
